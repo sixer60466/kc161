@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function ProductImages() {
+    const { id } = useParams();
     return (
+
         <div className="album py-5 bg-body-tertiary">
             <div className="container">
                 <div className="row row-cols-1 g-3">
@@ -11,7 +14,7 @@ function ProductImages() {
                                 role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
                                 <title>Placeholder</title>
                                 <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                                    dy=".3em">商品內頁商品內頁商品內頁商品內頁</text>
+                                    dy=".3em">這個商品編號是{id}</text>
                             </svg>
                             <div className="card-body">
                                 <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional

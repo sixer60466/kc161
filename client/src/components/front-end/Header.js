@@ -19,13 +19,13 @@ function Header() {
                                 <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/product">商品類別1</Link>
+                                <Link className="nav-link" to="/product/獎牌">商品類別1</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/product">商品類別2</Link>
+                                <Link className="nav-link" to="/product/獎杯">商品類別2</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/product">商品類別3</Link>
+                                <Link className="nav-link" to="/product/水晶">商品類別3</Link>
                             </li>
                         </ul>
                         {/* <form className="d-flex mt-3" role="search">
