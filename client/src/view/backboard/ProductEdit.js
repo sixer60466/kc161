@@ -11,6 +11,8 @@ function ProductEdit() {
                     <form>
                         <label for="productName" className="form-label">產品名稱：</label>
                         <input className="form-control" type="text" id="productName" />
+                        <label for="formFile" className="form-label mt-3">上傳圖片：</label>
+                        <input className="form-control" type="file" id="formFile"></input>
                         <label for="productId" className="form-label mt-3">產品編號：</label>
                         <input className="form-control" type="text" id="productId" />
                         <label for="productSize" className="form-label mt-3">產品尺寸：</label>
