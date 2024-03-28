@@ -11,24 +11,23 @@ function Sidebar() {
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
                 <li className="nav-item">
-                    <NavLink to="/admin" className="nav-link active" aria-current="page">
+                    <NavLink to="/admin/home" className="nav-link link-body-emphasis" aria-current="page">
                         <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#home" /></svg>
                         首頁
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/1" className="nav-link link-body-emphasis">
+                    <NavLink to="/admin/category" className="nav-link link-body-emphasis">
                         <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#speedometer2" /></svg>
                         商品分類
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/2" className="nav-link link-body-emphasis">
+                    <NavLink to="/admin/product" className="nav-link link-body-emphasis">
                         <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#table" /></svg>
                         商品列表
                     </NavLink>
                 </li>
-
             </ul>
             <hr />
 
