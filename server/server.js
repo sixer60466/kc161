@@ -2,18 +2,27 @@ const express = require('express')
 const cors = require('cors');
 const app = express()
 const db = require('./config/db')
-const port = 8000;
-const { getAllCategories } = require('./models/category')
-const { Category, Product } = require('./models/product');
+const categoryRoutes = require('./routes/categoryRoutes')
 
 app.use('/images', express.static('upload/images'));
+
+
+app.use(express.json()); // application/json
+app.use(express.urlencoded({ extended: true })); // application/x-www-form-urlencoded
+
+// 跨域存取
 app.use(cors());
+
+app.use('/category', categoryRoutes);
 
 app.get('/', (req, res) => {
     res.send('hi')
 })
 
-app.listen(port, () => {
-    console.log(`server is running on ${port} port`)
+
+
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+    console.log(`server is running on ${PORT} port`)
 })
 

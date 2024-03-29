@@ -20,6 +20,7 @@ function App() {
         <Route path='home' element={<HomeBackboard />}></Route>
         <Route path='category' element={<Category />}></Route>
         <Route path='category/create' element={<CategoryEdit />}></Route>
+        <Route path='category/:id' element={<CategoryEdit />}></Route>
         <Route path='product' element={<Product />}></Route>
         <Route path='product/create' element={<ProductEdit />}></Route>
       </Route>

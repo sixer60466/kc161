@@ -10,8 +10,8 @@ function Product() {
             <hr />
             <div style={{ width: "70%", marginLeft: "10%" }}>
                 <div className="d-flex my-3">
-                    <select className="form-select" style={{ maxWidth: "300px" }}>
-                        <option selected>Open this select menu</option>
+                    <select className="form-select" style={{ maxWidth: "300px" }} defaultValue="1">
+                        <option value='1'>Open this select menu</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
                         <option value="3">Three</option>

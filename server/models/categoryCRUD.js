@@ -1,4 +1,4 @@
-const { Category } = require('./product');
+const { Category } = require('./productSchema');
 
 // 產品分類CRUD操作
 

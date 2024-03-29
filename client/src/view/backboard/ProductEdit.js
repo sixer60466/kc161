@@ -9,15 +9,15 @@ function ProductEdit() {
             <div style={{ width: "70%", marginLeft: "10%" }}>
                 <div className="mb-3">
                     <form>
-                        <label for="productName" className="form-label">產品名稱：</label>
+                        <label htmlFor="productName" className="form-label">產品名稱：</label>
                         <input className="form-control" type="text" id="productName" />
-                        <label for="formFile" className="form-label mt-3">上傳圖片：</label>
+                        <label htmlFor="formFile" className="form-label mt-3">上傳圖片：</label>
                         <input className="form-control" type="file" id="formFile"></input>
-                        <label for="productId" className="form-label mt-3">產品編號：</label>
+                        <label htmlFor="productId" className="form-label mt-3">產品編號：</label>
                         <input className="form-control" type="text" id="productId" />
-                        <label for="productSize" className="form-label mt-3">產品尺寸：</label>
+                        <label htmlFor="productSize" className="form-label mt-3">產品尺寸：</label>
                         <input className="form-control" type="text" id="productSize" />
-                        <label for="productPrice" className="form-label mt-3">產品價格：</label>
+                        <label htmlFor="productPrice" className="form-label mt-3">產品價格：</label>
                         <input className="form-control" type="text" id="productPrice" />
                         <div className="d-flex mt-3">
                             <button type="button" className="ms-auto btn btn-primary btn-sm">確認</button>
