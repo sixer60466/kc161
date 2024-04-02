@@ -1,4 +1,90 @@
+import { useLocation } from "react-router-dom"
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
 function ProductEdit() {
+    const { state } = useLocation()
+    const { category, name, image: productImage, productId, size, price, _id } = state?.data || ''
+
+    const [categories, setCategories] = useState([])
+    const [imageUrl, setImageUrl] = useState();
+    const [image, setImage] = useState();
+    const [formData, setFormData] = useState({
+        category: '',
+        name: '',
+        productId: '',
+        size: '',
+        price: '',
+    })
+
+    useEffect(() => {
+        if (state?.data) {
+            setFormData({
+                category: category || '',
+                name: name || '',
+                productId: productId || '',
+                size: size || '',
+                price: price || '',
+            })
+            const baseUrl = 'http://localhost:8000/'
+            const imagePath = productImage.replace(/\\/g, '/');
+            const fullPath = baseUrl + imagePath.split('/').slice(1).join('/');
+            setImageUrl(fullPath || '')
+        }
+        axios.get('http://localhost:8000/category')
+            .then((res) => {
+                setCategories(res.data)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }, [])
+
+    // 設定圖片前台預覽，以及圖片上傳
+    const handleImageInput = (e) => {
+        const image = e.target.files[0]
+        setImage(image)
+        if (image) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageUrl(reader.result)
+            }
+            reader.readAsDataURL(image)
+        }
+    }
+
+    const handleFormChange = (e) => {
+        const { id, value } = e.target
+        setFormData((prevFormData) => {
+            return {
+                ...prevFormData,
+                [id]: value,
+            }
+        })
+    }
+
+
+    const handlePostSubmit = (e) => {
+        e.preventDefault()
+        const data = new FormData()
+        Object.keys(formData).forEach((key) => {
+            data.append(key, formData[key])
+        })
+        data.append('image', image)
+        axios.post('http://localhost:8000/product/create', data)
+            .then((res) => {
+                window.history.back();
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }
+
+    const handelePutSubmit = (e) => {
+        e.preventDefault()
+        console.log('test')
+    }
+
     return (
         <div className="d-flex flex-column p-3 bg-body-tertiary" style={{ width: "80%", position: "absolute", right: "0px", top: "0px", bottom: "0px" }}>
             <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -8,20 +94,28 @@ function ProductEdit() {
             <hr />
             <div style={{ width: "70%", marginLeft: "10%" }}>
                 <div className="mb-3">
-                    <form>
-                        <label htmlFor="productName" className="form-label">產品名稱：</label>
-                        <input className="form-control" type="text" id="productName" />
-                        <label htmlFor="formFile" className="form-label mt-3">上傳圖片：</label>
-                        <input className="form-control" type="file" id="formFile"></input>
+                    <form onSubmit={_id ? handelePutSubmit : handlePostSubmit}>
+                        <label htmlFor="category" className="form-label">選擇該產品分類：</label>
+                        <select onChange={handleFormChange} className="form-select" value={formData.category || ''} id='category' required>
+                            <option value='' disabled>請選擇分類</option>
+                            {categories.map(category =>
+                                <option value={category._id} key={category._id}>{category.name}</option>
+                            )}
+                        </select>
+                        <label htmlFor="name" className="form-label mt-3">產品名稱：</label>
+                        <input onChange={handleFormChange} className="form-control" type="text" id="name" value={formData.name} required />
+                        <label htmlFor="image" className="form-label mt-3">上傳圖片：</label>
+                        {imageUrl && <img className='mt-3' src={imageUrl} style={{ maxWidth: '20%' }}></img>}
+                        <input onChange={handleImageInput} className="form-control mt-3" type="file" id="image" required={!imageUrl}></input>
                         <label htmlFor="productId" className="form-label mt-3">產品編號：</label>
-                        <input className="form-control" type="text" id="productId" />
-                        <label htmlFor="productSize" className="form-label mt-3">產品尺寸：</label>
-                        <input className="form-control" type="text" id="productSize" />
-                        <label htmlFor="productPrice" className="form-label mt-3">產品價格：</label>
-                        <input className="form-control" type="text" id="productPrice" />
+                        <input onChange={handleFormChange} className="form-control" type="text" id="productId" value={formData.productId} required />
+                        <label htmlFor="size" className="form-label mt-3">產品尺寸：</label>
+                        <input onChange={handleFormChange} className="form-control" type="text" id="size" value={formData.size} required />
+                        <label htmlFor="price" className="form-label mt-3">產品價格：</label>
+                        <input onChange={handleFormChange} className="form-control" type="number" id="price" value={formData.price} required />
                         <div className="d-flex mt-3">
-                            <button type="button" className="ms-auto btn btn-primary btn-sm">確認</button>
-                            <button type="button" className="ms-2 btn btn-secondary btn-sm">取消</button>
+                            <button type="submit" className="ms-auto btn btn-primary btn-sm">確認</button>
+                            <button type="button" onClick={() => { window.history.back(); }} className="ms-2 btn btn-secondary btn-sm">取消</button>
                         </div>
                     </form>
                 </div>

@@ -10,12 +10,26 @@ function Category() {
     useEffect(() => {
         axios.get('http://localhost:8000/category')
             .then((res) => {
-                return setData(res.data)
+                setData(res.data)
             })
             .catch((err) => {
                 console.error(err)
             })
-    }, [])
+    }, [data])
+
+    const handleDelete = (e, id) => {
+        e.preventDefault()
+        const isConfirmed = window.confirm('確定要刪除此產品分類？')
+        if (isConfirmed) {
+            axios.delete(`http://localhost:8000/category/${id}`)
+                .then((res) => {
+                    alert('刪除成功');
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+    }
 
     return (
         <div className="d-flex flex-column p-3 bg-body-tertiary" style={{ width: "80%", position: "absolute", right: "0px", top: "0px", bottom: "0px" }}>
@@ -37,16 +51,17 @@ function Category() {
                     {data.map((item) => {
                         return (
                             <li key={item._id} className="list-group-item d-flex">
-                                <input className="form-check-input me-1" type="checkbox" value="" id={item._id} />
+                                {/* <input className="form-check-input me-1" type="checkbox" value="" id={item._id} /> */}
                                 <label className="ms-2 form-check-label" htmlFor={item._id}>{item.name}</label>
                                 <Link to={`/admin/category/${item._id}`} state={{ category: item }} className="ms-auto">
                                     <button type="button" className="btn btn-primary btn-sm">編輯</button>
                                 </Link>
-                                <button type="button" className="ms-2 btn btn-secondary btn-sm">刪除</button>
+                                <button type="button" onClick={(e) => handleDelete(e, item._id)} className="ms-2 btn btn-secondary btn-sm">刪除</button>
                             </li>
                         )
                     })}
                 </ul>
+
             </div>
             <Pagination></Pagination>
         </div>

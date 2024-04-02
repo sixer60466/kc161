@@ -1,17 +1,19 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import React, { useState } from 'react';
 import axios from 'axios';
 
 function CategoryEdit() {
     const { state } = useLocation();
+    const { id } = useParams();
     const categoryName = state?.category?.name || ''
 
     const [value, setValue] = useState(categoryName || '')
+
     const handleChange = (e) => {
         setValue(e.target.value)
     }
 
-    const handleSubmit = (e) => {
+    const handlePostSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:8000/category/create', { name: value })
             .then((res) => {
@@ -19,6 +21,17 @@ function CategoryEdit() {
             })
             .catch((err) => {
                 console.error(err)
+            })
+    }
+
+    const handlePutSubmit = (e) => {
+        e.preventDefault();
+        axios.put(`http://localhost:8000/category/${id}`, { name: value })
+            .then((res) => {
+                window.history.back();
+            })
+            .catch((err) => {
+                console.error(err);
             })
     }
 
@@ -32,12 +45,12 @@ function CategoryEdit() {
             <hr />
             <div style={{ width: "70%", marginLeft: "10%" }}>
                 <div className="mb-3">
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={id ? handlePutSubmit : handlePostSubmit}>
                         <label htmlFor="formFile" className="form-label">商品分類名稱：</label>
-                        <input className="form-control" type="text" id="formFile" placeholder="交趾陶、水晶..." value={value} onChange={handleChange} />
+                        <input className="form-control" type="text" id="formFile" placeholder="交趾陶、水晶..." value={value} onChange={handleChange} required />
                         <div className="d-flex mt-3">
                             <button type="submit" className="ms-auto btn btn-primary btn-sm">確認</button>
-                            <button type="button" className="ms-2 btn btn-secondary btn-sm">取消</button>
+                            <button type="button" onClick={() => { window.history.back(); }} className="ms-2 btn btn-secondary btn-sm">取消</button>
                         </div>
                     </form>
                 </div>

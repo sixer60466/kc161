@@ -1,18 +1,35 @@
 // 匯入category的CRUD操作
 const {
     createCategory,
-    getAllCategories
+    updateCategory,
+    getAllCategories,
+    deleteCategory,
 } = require('../models/categoryCRUD');
 
 // 新增分類
-const create = (req, res) => {
+const categoryCreate = (req, res) => {
     let data = req.body.name
     createCategory(data)
-        .then((categories) => {
-            return res.status(201).json(categories);
+        .then((category) => {
+            return res.status(201).json(category);
         })
         .catch((err) => {
-            res.status(500).json({ err: 'Error creating category' });
+            console.log(err)
+            res.status(500).json({ error: 'Error creating category' });
+        })
+}
+
+// 更新分類
+const categoryUpdate = (req, res) => {
+    let id = req.params.id
+    let data = req.body.name
+    updateCategory(id, data)
+        .then((category) => {
+            return res.status(201).json(category)
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(500).json({ error: 'Error updating category' })
         })
 }
 
@@ -21,11 +38,27 @@ const create = (req, res) => {
 const getAllCategoriesController = (req, res) => {
     getAllCategories()
         .then((categories) => {
+            categories.sort((a, b) => b.createAt - a.createAt);
             return res.json(categories)
         })
-        .catch((error) => {
+        .catch((err) => {
+            console.error(err)
             res.status(500).json({ error: 'Error fetching categories' });
         })
 }
 
-module.exports = { getAllCategoriesController, create }
+// 刪除分類
+const categoryDelete = (req, res) => {
+    let id = req.params.id
+    deleteCategory(id)
+        .then((category) => {
+            return res.status(200).json(category)
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(500).json({ error: 'Error delete' })
+        })
+}
+
+
+module.exports = { getAllCategoriesController, categoryCreate, categoryUpdate, categoryDelete }
