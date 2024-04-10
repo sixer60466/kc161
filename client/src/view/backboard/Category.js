@@ -6,16 +6,18 @@ import { Link } from "react-router-dom";
 
 function Category() {
     const [data, setData] = useState([])
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:8000/category')
             .then((res) => {
+                console.log('123')
                 setData(res.data)
             })
             .catch((err) => {
                 console.error(err)
             })
-    }, [data])
+    }, [reload])
 
     const handleDelete = (e, id) => {
         e.preventDefault()
@@ -24,6 +26,7 @@ function Category() {
             axios.delete(`http://localhost:8000/category/${id}`)
                 .then((res) => {
                     alert('刪除成功');
+                    setReload(prev => !prev);
                 })
                 .catch((err) => {
                     console.error(err)
@@ -53,7 +56,7 @@ function Category() {
                             <li key={item._id} className="list-group-item d-flex">
                                 {/* <input className="form-check-input me-1" type="checkbox" value="" id={item._id} /> */}
                                 <label className="ms-2 form-check-label" htmlFor={item._id}>{item.name}</label>
-                                <Link to={`/admin/category/${item._id}`} state={{ category: item }} className="ms-auto">
+                                <Link to={`/admin/category/${item._id}`} className="ms-auto">
                                     <button type="button" className="btn btn-primary btn-sm">編輯</button>
                                 </Link>
                                 <button type="button" onClick={(e) => handleDelete(e, item._id)} className="ms-2 btn btn-secondary btn-sm">刪除</button>

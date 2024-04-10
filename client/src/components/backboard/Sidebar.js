@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Sidebar() {
     return (
@@ -23,7 +23,7 @@ function Sidebar() {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/product" className="nav-link link-body-emphasis">
+                    <NavLink to="/admin/product" className="nav-link link-body-emphasis" onClick={() => { localStorage.removeItem('category'); }}>
                         <svg className="bi pe-none me-2" width="16" height="16"><use xlinkHref="#table" /></svg>
                         商品列表
                     </NavLink>

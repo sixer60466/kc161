@@ -1,16 +1,20 @@
 const express = require('express')
 const router = express.Router()
+const upload = require('../config/multer')
 const {
     categoryCreate,
+    CategoryById,
     categoryUpdate,
     getAllCategoriesController,
     categoryDelete } = require('../controllers/categoryController')
 
 router.get('/', getAllCategoriesController)
 
-router.post('/create', categoryCreate);
+router.get('/:id', CategoryById);
 
-router.put('/:id', categoryUpdate)
+router.post('/create', upload.single('image'), categoryCreate);
+
+router.put('/:id', upload.single('image'), categoryUpdate)
 
 router.delete('/:id', categoryDelete)
 

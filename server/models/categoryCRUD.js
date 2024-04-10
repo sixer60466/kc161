@@ -3,7 +3,8 @@ const { Category } = require('./productSchema');
 // 產品分類CRUD操作
 
 // 新增
-const createCategory = (categoryName) => Category.create({ name: categoryName });
+// const createCategory = (categoryName) => Category.create({ name: categoryName });
+const createCategory = (categoryData) => Category.create(categoryData);
 
 // 讀取全部分類
 const getAllCategories = () => Category.find();
@@ -12,8 +13,8 @@ const getAllCategories = () => Category.find();
 const getCategoryById = (categoryId) => Category.findById(categoryId);
 
 // 更新分類名稱
-const updateCategory = (categoryId, categoryName) => Category.findByIdAndUpdate(
-    categoryId, { name: categoryName }, { new: true }
+const updateCategory = (categoryId, categoryData) => Category.findByIdAndUpdate(
+    categoryId, categoryData, { new: true }
 );
 
 // 刪除分類
