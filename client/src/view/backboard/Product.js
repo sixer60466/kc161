@@ -10,6 +10,7 @@ function Product() {
     const [searchParams, setSearchParams] = useSearchParams()
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState('')
     const [reload, setReload] = useState(false);
 
     useEffect(() => {
@@ -56,7 +57,12 @@ function Product() {
 
     const handleCategoryChange = (e) => {
         localStorage.setItem('category', e.target.value)
+        setSearchQuery('')
         setSearchParams({ category: e.target.value, page: 1 })
+    }
+    const handleSearch = (e) => {
+        e.preventDefault()
+        setSearchParams({ ...Object.fromEntries(searchParams), query: searchQuery, page: 1 })
     }
     return (
         <div className="d-flex flex-column p-3 bg-body-tertiary" style={{ width: "80%", position: "absolute", right: "0px", top: "0px", bottom: "0px" }}>
@@ -73,8 +79,8 @@ function Product() {
                             return <option value={category._id} key={category._id}>{category.name}</option>
                         })}
                     </select>
-                    <form className="ms-auto col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" style={{ maxWidth: "350px" }}>
-                        <input type="search" className="form-control" placeholder="搜尋商品名稱或編號" aria-label="Search" />
+                    <form className="ms-auto col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" style={{ maxWidth: "350px" }} onSubmit={handleSearch} >
+                        <input type="search" className="form-control" placeholder="搜尋商品名稱或編號" aria-label="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                     </form>
                     <Link to='/admin/product/create'>
                         <button type="button" className="btn btn-danger mb-3">新增商品</button>
@@ -82,37 +88,41 @@ function Product() {
                 </div>
 
                 <p className="fs-3">OO分類-商品列表</p>
+                {products.length > 0 ? (
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col" style={{ width: "40%" }}>產品名稱</th>
+                                <th scope="col" style={{ width: "20%" }}>產品編號</th>
+                                <th scope="col" style={{ width: "20%" }}>產品價格 (元)</th>
+                                <th scope="col" style={{ width: "20%" }}>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.map((product, index) => {
+                                return (
+                                    <tr key={index + 1}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{product.name}</td>
+                                        <td>{product.productId}</td>
+                                        <td>{product.price}</td>
+                                        <td>
+                                            <Link to={`/admin/product/${product._id}`}>
+                                                <button type="button" className="btn btn-primary btn-sm">編輯</button>
+                                            </Link>
+                                            <button type="button" onClick={(e) => handleDelete(e, product._id)} className="ms-2 btn btn-secondary btn-sm">刪除</button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
 
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" style={{ width: "40%" }}>產品名稱</th>
-                            <th scope="col" style={{ width: "20%" }}>產品編號</th>
-                            <th scope="col" style={{ width: "20%" }}>產品價格 (元)</th>
-                            <th scope="col" style={{ width: "20%" }}>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.map((product, index) => {
-                            return (
-                                <tr key={index + 1}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{product.name}</td>
-                                    <td>{product.productId}</td>
-                                    <td>{product.price}</td>
-                                    <td>
-                                        <Link to={`/admin/product/${product._id}`}>
-                                            <button type="button" className="btn btn-primary btn-sm">編輯</button>
-                                        </Link>
-                                        <button type="button" onClick={(e) => handleDelete(e, product._id)} className="ms-2 btn btn-secondary btn-sm">刪除</button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                        </tbody>
+                    </table>) :
+                    (
+                        <div>找不到相關的資料</div>
+                    )}
 
-                    </tbody>
-                </table>
 
 
             </div>
@@ -120,4 +130,6 @@ function Product() {
         </div>
     )
 }
+
+
 export default Product

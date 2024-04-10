@@ -11,7 +11,6 @@ function Category() {
     useEffect(() => {
         axios.get('http://localhost:8000/category')
             .then((res) => {
-                console.log('123')
                 setData(res.data)
             })
             .catch((err) => {

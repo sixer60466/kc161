@@ -8,14 +8,21 @@ const createProduct = (productDate) => {
 }
 
 // 讀取所有產品
-const getAllProducts = async (page = 1, limit = 10) => {
+const getAllProducts = async (page = 1, limit = 10, query = '') => {
     const skipAmount = (page - 1) * limit
+    let filter = {}
+    if (query) {
+        filter.$or = [
+            { name: new RegExp(query, 'i') },
+            { productId: new RegExp(query, 'i') }
+        ]
+    }
     const products = await Product
-        .find()
+        .find(filter)
         .sort({ createAt: -1 })
         .skip(skipAmount)
         .limit(limit)
-    const total = await Product.countDocuments()
+    const total = await Product.countDocuments(filter)
     return {
         totalPages: Math.ceil(total / limit),
         total,
@@ -24,20 +31,22 @@ const getAllProducts = async (page = 1, limit = 10) => {
     }
 }
 
-// 讀取所有產品
-// const getAllProducts = () => {
-//     return Product.find();
-// }
-
 // 根據產品分類讀取產品
-const getProductByCategoryId = async (categoryId, page = 1, limit = 10) => {
+const getProductByCategoryId = async (categoryId, page = 1, limit = 10, query = '') => {
     const skipAmount = (page - 1) * limit
+    let filter = { category: categoryId };
+    if (query) {
+        filter.$or = [
+            { name: new RegExp(query, 'i') },
+            { productId: new RegExp(query, 'i') }
+        ]
+    }
     const products = await Product
-        .find({ category: categoryId })
+        .find(filter)
         .sort({ createAt: -1 })
         .skip(skipAmount)
         .limit(limit)
-    const total = await Product.countDocuments({ category: categoryId })
+    const total = await Product.countDocuments(filter)
     return {
         products,
         total,
@@ -46,11 +55,6 @@ const getProductByCategoryId = async (categoryId, page = 1, limit = 10) => {
     }
 }
 
-
-// 根據產品分類讀取產品
-// const getProductByCategoryId = (categoryId) => {
-//     return Product.find({ category: categoryId })
-// }
 
 // 根據id讀取該產品
 const getProductById = (productId) => {

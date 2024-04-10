@@ -30,9 +30,10 @@ const productCreate = (req, res) => {
 const getAllProductsController = (req, res) => {
     let category = req.query.category || 'all'
     let page = parseInt(req.query.page) || 1
-    let limit = parseInt(req.query.limit) || 5
+    let limit = parseInt(req.query.limit) || 10
+    let query = req.query.query || ''
     if (category === 'all') {
-        getAllProducts(page, limit)
+        getAllProducts(page, limit, query)
             .then(({ products, total, totalPages }) => {
                 res.json({ products, total, totalPages, currentPage: page })
             })
@@ -41,7 +42,7 @@ const getAllProductsController = (req, res) => {
                 res.status(500).json({ error: 'Error fetching products' });
             })
     } else {
-        getProductByCategoryId(category, page, limit)
+        getProductByCategoryId(category, page, limit, query)
             .then(({ products, total, totalPages }) => {
                 res.json({ products, total, totalPages, currentPage: page })
             })
