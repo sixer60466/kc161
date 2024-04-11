@@ -7,14 +7,14 @@ import axios from "axios";
 function Product() {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([])
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams() //查詢字符
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchQuery, setSearchQuery] = useState('')
-    const [reload, setReload] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('') //搜尋框文字
+    const [reload, setReload] = useState(false); //刪除功能依賴項
 
     useEffect(() => {
-        axios.get('http://localhost:8000/category')
+        axios.get('http://localhost:8000/category/all')
             .then((res) => {
                 setCategories(res.data)
             })
@@ -22,6 +22,7 @@ function Product() {
                 console.error(err)
             })
     }, [])
+
 
     useEffect(() => {
         const params = searchParams.toString()
@@ -56,14 +57,15 @@ function Product() {
     }
 
     const handleCategoryChange = (e) => {
-        localStorage.setItem('category', e.target.value)
         setSearchQuery('')
         setSearchParams({ category: e.target.value, page: 1 })
     }
+
     const handleSearch = (e) => {
         e.preventDefault()
         setSearchParams({ ...Object.fromEntries(searchParams), query: searchQuery, page: 1 })
     }
+
     return (
         <div className="d-flex flex-column p-3 bg-body-tertiary" style={{ width: "80%", position: "absolute", right: "0px", top: "0px", bottom: "0px" }}>
             <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -73,7 +75,7 @@ function Product() {
             <hr />
             <div style={{ width: "70%", marginLeft: "10%" }}>
                 <div className="d-flex my-3">
-                    <select className="form-select" style={{ maxWidth: "300px" }} value={localStorage.getItem('category') || 'all'} onChange={handleCategoryChange}>
+                    <select className="form-select" style={{ maxWidth: "300px" }} value={searchParams.get('category') || 'all'} onChange={handleCategoryChange}>
                         <option value='all'>所有商品分類</option>
                         {categories.map((category) => {
                             return <option value={category._id} key={category._id}>{category.name}</option>
@@ -120,7 +122,7 @@ function Product() {
                         </tbody>
                     </table>) :
                     (
-                        <div>找不到相關的資料</div>
+                        <div>找不到相關的商品資料</div>
                     )}
 
 

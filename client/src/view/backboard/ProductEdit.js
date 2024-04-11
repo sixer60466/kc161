@@ -16,7 +16,7 @@ function ProductEdit() {
     })
 
     useEffect(() => {
-        axios.get('http://localhost:8000/category')
+        axios.get('http://localhost:8000/category/all')
             .then((res) => {
                 setCategories(res.data)
             })

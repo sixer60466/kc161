@@ -3,6 +3,7 @@ const path = require('path');
 
 // 匯入category的CRUD操作
 const {
+    getCategories,
     getCategoryById,
     createCategory,
     updateCategory,
@@ -91,6 +92,20 @@ const getAllCategoriesController = (req, res) => {
         })
 }
 
+//讀取分類(頁面篩選)
+const getCategoriesController = (req, res) => {
+    let page = parseInt(req.query.page) || 1
+    let limit = parseInt(req.query.limit) || 10
+    getCategories(page, limit)
+        .then(({ categories, total, totalPages }) => {
+            res.json({ categories, total, totalPages, currentPage: page })
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(500).json({ error: 'Error fetching categories' });
+        })
+}
+
 // 刪除分類
 
 const categoryDelete = (req, res) => {
@@ -136,4 +151,4 @@ const categoryDelete = (req, res) => {
 }
 
 
-module.exports = { getAllCategoriesController, categoryCreate, categoryUpdate, categoryDelete, CategoryById }
+module.exports = { getCategoriesController, getAllCategoriesController, categoryCreate, categoryUpdate, categoryDelete, CategoryById }

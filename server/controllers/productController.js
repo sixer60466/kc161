@@ -4,8 +4,7 @@ const path = require('path');
 const {
     getProductById,
     createProduct,
-    getAllProducts,
-    getProductByCategoryId,
+    getProducts,
     updateProduct,
     deleteProduct } = require('../models/productCRUD')
 
@@ -32,25 +31,14 @@ const getAllProductsController = (req, res) => {
     let page = parseInt(req.query.page) || 1
     let limit = parseInt(req.query.limit) || 10
     let query = req.query.query || ''
-    if (category === 'all') {
-        getAllProducts(page, limit, query)
-            .then(({ products, total, totalPages }) => {
-                res.json({ products, total, totalPages, currentPage: page })
-            })
-            .catch((err) => {
-                console.error(err)
-                res.status(500).json({ error: 'Error fetching products' });
-            })
-    } else {
-        getProductByCategoryId(category, page, limit, query)
-            .then(({ products, total, totalPages }) => {
-                res.json({ products, total, totalPages, currentPage: page })
-            })
-            .catch((err) => {
-                console.error(err)
-                res.status(500).json({ error: 'Error fetching products' });
-            })
-    }
+    getProducts(category, page, limit, query)
+        .then(({ products, total, totalPages }) => {
+            res.json({ products, total, totalPages, currentPage: page })
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(500).json({ error: 'Error fetching products' });
+        })
 }
 
 //依照產品id讀取產品

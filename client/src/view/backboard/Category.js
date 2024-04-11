@@ -1,17 +1,23 @@
 import Pagination from "../../components/backboard/Pagination";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 
 function Category() {
     const [data, setData] = useState([])
+    const [searchParams, setSearchParams] = useSearchParams() //查詢字符
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [reload, setReload] = useState(false);
+
 
     useEffect(() => {
         axios.get('http://localhost:8000/category')
             .then((res) => {
-                setData(res.data)
+                setData(res.data.categories)
+                setTotalPages(res.data.totalPages)
+                setCurrentPage(res.data.currentPage)
             })
             .catch((err) => {
                 console.error(err)
@@ -31,6 +37,10 @@ function Category() {
                     console.error(err)
                 })
         }
+    }
+
+    const handlePageChange = (newPage) => {
+        setSearchParams({ ...Object.fromEntries(searchParams), page: newPage })
     }
 
     return (
@@ -65,7 +75,7 @@ function Category() {
                 </ul>
 
             </div>
-            <Pagination></Pagination>
+            <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange}></Pagination>
         </div>
     )
 }
