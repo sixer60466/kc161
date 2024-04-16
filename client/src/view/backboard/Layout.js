@@ -1,11 +1,26 @@
 import Sidebar from "../../components/backboard/Sidebar";
-import { Outlet } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { Outlet, Navigate } from "react-router-dom";
+import axios from "axios";
 
 function Layout() {
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/user/validateToken', { withCredentials: true })
+            .then(() => setIsAuthenticated(true))
+            .catch(() => setIsAuthenticated(false));
+    }, []);
+
+    if (isAuthenticated === null) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="container-fluid">
             <Sidebar></Sidebar>
-            <Outlet></Outlet>
+            {isAuthenticated ? <Outlet /> : <Navigate to="/admin/login" />}
+            {/* <Outlet></Outlet> */}
         </div>
     )
 }

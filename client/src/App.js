@@ -7,6 +7,7 @@ import Layout from './view/front-end/Layout';
 import LayoutBackboard from './view/backboard/Layout';
 import HomeBackboard from './view/backboard/Home'
 import SignIn from './view/backboard/Sign_in';
+import Register from './view/backboard/Register';
 import Category from './view/backboard/Category';
 import Product from './view/backboard/Product';
 import CategoryEdit from './view/backboard/CategoryEdit';
@@ -15,7 +16,8 @@ import ProductEdit from './view/backboard/ProductEdit';
 function App() {
   return (
     <Routes>
-      <Route path='/admin/sign_in' element={<SignIn />}></Route>
+      <Route path='/admin/login' element={<SignIn />}></Route>
+      <Route path='/admin/register' element={<Register />}></Route>
       <Route path='/admin' element={<LayoutBackboard />}>
         <Route path='home' element={<HomeBackboard />}></Route>
         <Route path='category' element={<Category />}></Route>
@@ -30,6 +32,7 @@ function App() {
         <Route path='product/:category' element={<ProductPage />} ></Route>
         <Route path='product/:category/:id' element={<ProductInnerPage />}></Route>
       </Route>
+      <Route path="*" element={<div>404 Not Found</div>}></Route>
     </Routes >
   );
 }

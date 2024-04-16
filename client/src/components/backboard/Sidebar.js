@@ -1,6 +1,26 @@
-import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Sidebar() {
+    const navigate = useNavigate()
+
+    const handleLogout = (e) => {
+        e.preventDefault()
+        const isConfirmed = window.confirm('確定要登出？')
+        if (isConfirmed) {
+            axios.post('http://localhost:8000/user/logout', {}, {
+                withCredentials: true
+            })
+                .then((res) => {
+                    console.log('登出成功')
+                    navigate('/admin/login')
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+    }
+
     return (
 
         <div className="d-flex flex-column p-3 bg-body-tertiary" style={{ width: "20%", position: "absolute", top: "0px", bottom: "0px" }}>
@@ -32,7 +52,7 @@ function Sidebar() {
             <hr />
 
             <ul className="nav nav-pills flex-column">
-                <li><a className="dropdown-item" href="#">登出</a></li>
+                <button className="btn btn-secondary w-100 py-2 mt-3" onClick={handleLogout}>登出</button>
             </ul>
 
         </div>
