@@ -89,7 +89,7 @@ function Product() {
                     </Link>
                 </div>
 
-                <p className="fs-3">OO分類-商品列表</p>
+                <p className="fs-3">商品列表</p>
                 {products.length > 0 ? (
                     <table className="table table-striped">
                         <thead>

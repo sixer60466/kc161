@@ -47,7 +47,7 @@ function Sign_in() {
             <div className="container-fluid">
                 <header className="d-flex justify-content-center py-3 mb-4 border-bottom ">
                     <a href="/" className="text-center d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
-                        <span className="fs-4">昆程管理後台</span>
+                        <span className="fs-4">管理後台</span>
                     </a>
                 </header>
             </div>

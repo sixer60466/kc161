@@ -1,14 +1,30 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Header() {
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        axios.get('http://localhost:8000/category/all')
+            .then((res) => {
+                setCategories(res.data)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }, [])
+
+
+
     return (
         <nav className="navbar navbar-dark bg-dark" aria-label="Dark offcanvas navbar">
             <div className="container">
-                <Link className="navbar-brand" to="/">Kaunchen昆程</Link>
+                <Link className="navbar-brand" to="/">Demo</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarDark" aria-controls="offcanvasNavbarDark" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel">
+                <div className="offcanvas offcanvas-end text-bg-dark" tabIndex="-1" id="offcanvasNavbarDark" aria-labelledby="offcanvasNavbarDarkLabel">
                     <div className="offcanvas-header">
                         <h5 className="offcanvas-title" id="offcanvasNavbarDarkLabel">Kaunchen昆程</h5>
                         <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -16,17 +32,14 @@ function Header() {
                     <div className="offcanvas-body">
                         <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+                                <Link className="nav-link" aria-current="page" to="/">Home</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/product/獎牌">商品類別1</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/product/獎杯">商品類別2</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/product/水晶">商品類別3</Link>
-                            </li>
+                            {categories.map((category) => {
+                                return (
+                                    <li key={category._id} className="nav-item">
+                                        <Link className="nav-link" aria-current="page" to={`/product/${category.name}`}>{category.name}</Link>
+                                    </li>)
+                            })}
                         </ul>
                         {/* <form className="d-flex mt-3" role="search">
                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />

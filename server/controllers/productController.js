@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const {
+    getProductsByCategory,
     getProductById,
     createProduct,
     getProducts,
@@ -24,8 +25,21 @@ const productCreate = (req, res) => {
         })
 }
 
+//讀取該分類下所有產品
 
-// 讀取所有產品
+const getAllproducts = (req, res) => {
+    const { category } = req.params
+    getProductsByCategory(category)
+        .then((products) => {
+            products.sort((a, b) => b.createAt - a.createAt);
+            res.json(products)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+}
+
+// 讀取產品(分頁篩選)
 const getAllProductsController = (req, res) => {
     let category = req.query.category || 'all'
     let page = parseInt(req.query.page) || 1
@@ -132,6 +146,7 @@ const productDelete = (req, res) => {
 }
 
 module.exports = {
+    getAllproducts,
     productCreate,
     getAllProductsController,
     productUpdate,

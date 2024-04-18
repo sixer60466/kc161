@@ -6,7 +6,7 @@ import ProductInnerPage from './view/front-end/ProductInnerPage';
 import Layout from './view/front-end/Layout';
 import LayoutBackboard from './view/backboard/Layout';
 import HomeBackboard from './view/backboard/Home'
-import SignIn from './view/backboard/Sign_in';
+import Login from './view/backboard/Login';
 import Register from './view/backboard/Register';
 import Category from './view/backboard/Category';
 import Product from './view/backboard/Product';
@@ -16,7 +16,7 @@ import ProductEdit from './view/backboard/ProductEdit';
 function App() {
   return (
     <Routes>
-      <Route path='/admin/login' element={<SignIn />}></Route>
+      <Route path='/admin/login' element={<Login />}></Route>
       <Route path='/admin/register' element={<Register />}></Route>
       <Route path='/admin' element={<LayoutBackboard />}>
         <Route path='home' element={<HomeBackboard />}></Route>
